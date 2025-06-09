@@ -21,6 +21,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Mark workspace safe for git
+        run: git config --global --add safe.directory /github/workspace
+
       - name: Set up Python Env
         uses: actions/setup-python@v2  # ✅ updated version
         with:
