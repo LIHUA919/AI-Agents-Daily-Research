@@ -6,41 +6,35 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
   schedule:
-    - cron:  "* 12 * * *"  # Runs every minute of 12th hour
-env:
+    - cron: "* 12 * * *"  # Runs every minute during the 12th hour UTC
 
-  GITHUB_USER_NAME: xxx # your github id
-  GITHUB_USER_EMAIL: xxx # your email address
-  
-  
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+env:
+  GITHUB_USER_NAME: LIHUA919  # Replace with your GitHub username, or better: use secrets
+  GITHUB_USER_EMAIL: 1017343802@qq.com  # Replace with your email, or use secrets
+
 jobs:
-  # This workflow contains a single job called "build"
   build:
     name: update
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    
-    # Steps represent a sequence of tasks that will be executed as part of the job
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        
+
       - name: Set up Python Env
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v2  # ✅ updated version
         with:
-          python-version: 3.6        
+          python-version: '3.9'  # ✅ safer than 3.6
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install arxiv
-          pip install requests
-          
-      - name: Run daily arxiv 
+          pip install arxiv requests
+
+      - name: Run daily arxiv
         run: |
           python daily_arxiv.py
-          
+
       - name: Push new cv-arxiv-daily.md
         uses: github-actions-x/commit@v2.8
         with:
