@@ -1,61 +1,59 @@
-# name of workflow
-name: Run Arxiv Papers Daily
+# This is a basic workflow to help you get started with Actions
+
+name: Run Update Paper Links Weekly
 
 # Controls when the workflow will run
 on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
   schedule:
-    - cron: "0 12 * * *"  # Runs daily at 12:00 UTC (修正了cron表达式，之前是每小时的第12分钟)
+    - cron:  "0 8 * * 1"  #Run At 08:00 on Monday
+  # Triggers the workflow on push or pull request events but only for the main branch
+#   push:
+#     branches:
+#     - main
 
 env:
-  GITHUB_USER_NAME: LIHUA919  # Replace with your GitHub username, or better: use secrets
-  GITHUB_USER_EMAIL: 1017343802@qq.com  # Replace with your email, or use secrets
 
+  GITHUB_USER_NAME: Vincentqyw
+  GITHUB_USER_EMAIL: realcat@126.com
+  
+  
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  # This workflow contains a single job called "build"
   build:
-    name: Update Arxiv Papers
+    name: update
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
+    
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Checkout repository
-        # 建议更新到 v4 版本，它包含更多的安全性和功能改进
-        uses: actions/checkout@v4
-
-      - name: Configure Git safe directory
-        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
-        # 使用 "$GITHUB_WORKSPACE" 环境变量更具通用性，但 /github/workspace 也行
-
-      - name: Set up Python Environment
-        # 建议更新到 v5 版本
-        uses: actions/setup-python@v5
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Set up Python Env
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.9' # 你的选择是安全的
-          # 如果需要更快的依赖安装，可以考虑添加 caching
-          # cache: 'pip'
-
-      - name: Install Python dependencies
+          python-version: '3.10'
+          #architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install arxiv requests beautifulsoup4
-
-      - name: Run daily arxiv script
+          pip install arxiv
+          pip install requests
+          pip install pyyaml
+          
+      - name: Run daily arxiv 
         run: |
-          python daily_arxiv.py
-
-      - name: Commit and Push new files
-        # github-actions-x/commit@v2.8 是你选择的action
-        # 如果这个action能满足需求，可以继续使用。
-        # 考虑到它之前在 `pull` 步骤中可能遇到问题，
-        # 确保它能正确处理 `rebase` 选项。
-        # 如果只是简单的提交并推送，actions/upload-pages-artifact 可以考虑
-        # 或者使用 https://github.com/stefanzweifel/git-auto-commit-action
-        uses: github-actions-x/commit@v2.8
+          python daily_arxiv.py --update_paper_links
+          
+      - name: Push new cv-arxiv-daily.md
+        uses: github-actions-x/commit@v2.9
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Github Action Automatic Update CV Arxiv Papers"
-          # 确保这些文件在你的 daily_arxiv.py 运行后真的被修改或创建了
-          files: README.md cv-arxiv-daily.json
-          rebase: 'true' # 这是一个字符串 'true'，通常 'true' 或 true 都可以
+          files: README.md docs/cv-arxiv-daily.json docs/cv-arxiv-daily-web.json docs/index.md docs/cv-arxiv-daily-wechat.json docs/wechat.md
+          rebase: 'true'
           name: ${{ env.GITHUB_USER_NAME }}
           email: ${{ env.GITHUB_USER_EMAIL }}
