@@ -4,7 +4,7 @@ This tool will daily crawl https://arxiv.org and use LLMs to summarize them.
 See in: https://dw-dengwei.github.io/daily-arXiv-ai-enhanced/
 
 # How to use
-This repo will daily crawl arXiv papers about **cs.CV, cs.GR and cs.CL**, and use **DeepSeek** to summarize the papers in **Chinese**.
+This repo will daily crawl arXiv papers about **cs.AI, cs.LG and cs.MA**, and use **DeepSeek** to summarize the papers in **Chinese**.
 If you wish to crawl other arXiv categories, use other LLMs or other languages, please follow the bellow instructions.
 Otherwise, you can directly use this repo in https://dw-dengwei.github.io/daily-arXiv-ai-enhanced/ . Please star it if you like :)
 
@@ -31,6 +31,8 @@ You can modify it in `.github/workflows/run.yml`
 - [ ] Update instructions for fork users about how to use github pages.
 
 # Content
+[2025-06-17](data/2025-06-17.md)
+
 [2025-06-13](data/2025-06-13.md)
 
 [2025-06-12](data/2025-06-12.md)
