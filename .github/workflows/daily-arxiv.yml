@@ -45,11 +45,11 @@ jobs:
           
       - name: Run daily arxiv 
         run: |
-          # First run to get new papers
-          python daily_arxiv.py || echo "First run may fail due to missing config"
+          # Run the daily arxiv script with config
+          python daily_arxiv.py --config_path config.yaml
           # Weekly update of paper links (on Mondays)
           if [ "$(date +%u)" = "1" ]; then
-            python daily_arxiv.py --update_paper_links || echo "Update paper links failed"
+            python daily_arxiv.py --config_path config.yaml --update_paper_links
           fi
           
       - name: Push new arxiv papers
