@@ -539,3 +539,5 @@
 2026-01-06_AI_enhanced_English.jsonl
 2026-01-07.jsonl
 2026-01-07_AI_enhanced_English.jsonl
+2026-01-08.jsonl
+2026-01-08_AI_enhanced_English.jsonl
